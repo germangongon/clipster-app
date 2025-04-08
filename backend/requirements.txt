@@ -1,0 +1,7 @@
+Django>=5.2,<6.0
+djangorestframework
+djangorestframework-simplejwt
+python-decouple
+gunicorn
+psycopg2-binary
+django-cors-headers
