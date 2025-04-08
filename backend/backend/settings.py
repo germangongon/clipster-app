@@ -1,6 +1,9 @@
 from pathlib import Path
 import os
 from decouple import config
+import environ
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -130,8 +133,9 @@ REST_FRAMEWORK = {
     ]
 }
 
-# CORS settings (development only)
-CORS_ALLOW_ALL_ORIGINS = True
+
+BACKEND_URL = env('BACKEND_URL')
+CORS_ALLOWED_ORIGINS = env('CORS_ALLOWED_ORIGINS').split(',')
 CORS_ALLOW_CREDENTIALS = True
 
 # Authentication settings
