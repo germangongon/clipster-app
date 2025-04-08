@@ -5,3 +5,4 @@ python-decouple
 gunicorn
 psycopg2-binary
 django-cors-headers
+django-environ
