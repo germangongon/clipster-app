@@ -1,1 +1,2 @@
-web: echo $(pwd) && gunicorn backend.backend.wsgi:application
+web: gunicorn backend.backend.wsgi:application
+
