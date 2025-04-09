@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Esperando a que la base de datos esté disponible..."
 
