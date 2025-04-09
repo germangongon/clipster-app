@@ -3,8 +3,8 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Instalar Netcat (usando netcat-traditional)
-RUN apt-get update && apt-get install -y netcat-traditional
+# Instalar netcat-openbsd para usar el comando nc
+RUN apt-get update && apt-get install -y netcat-openbsd
 
 WORKDIR /app
 
