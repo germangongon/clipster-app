@@ -15,31 +15,29 @@ import string
 # Vista para crear y listar enlaces
 class LinkListCreateView(generics.ListCreateAPIView):
     serializer_class = LinkSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [AllowAny]  # ✅ Permitir acceso sin autenticar
 
     def get_queryset(self):
-        return Link.objects.filter(user=self.request.user)
+        # Si el usuario está autenticado, mostrar sus enlaces
+        if self.request.user.is_authenticated:
+            return Link.objects.filter(user=self.request.user)
+        return Link.objects.none()  # 🔒 Los anónimos no ven enlaces
 
     def perform_create(self, serializer):
         custom_alias = serializer.validated_data.get('custom_alias', '').strip()
 
-        if custom_alias:  # Si se proporcionó un alias personalizado
-            # Verificar si el alias ya existe (usamos custom_alias tanto para el campo custom_alias como para short_code)
-            if Link.objects.filter(custom_alias=custom_alias).exists():
-                raise serializer.ValidationError({"custom_alias": "This alias is already taken."})
-            # Guardar usando el custom_alias también como short_code para evitar conflictos
-            serializer.save(user=self.request.user, short_code=custom_alias)
-        else:
-            # Si no se proporcionó custom_alias, se genera un short_code único
-            short_code = self.generate_unique_code()
-            serializer.save(user=self.request.user, short_code=short_code)
+        # Validar que el alias no exista
+        if custom_alias and Link.objects.filter(custom_alias=custom_alias).exists():
+            raise serializer.ValidationError({"custom_alias": "This alias is already taken."})
 
-    # Función para generar un short_code único
+        short_code = custom_alias if custom_alias else self.generate_unique_code()
+        user = self.request.user if self.request.user.is_authenticated else None
+
+        serializer.save(user=user, short_code=short_code)
+
     def generate_unique_code(self):
         while True:
-            # Generar un código aleatorio de 6 caracteres
             code = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
-            # Verificar que el código no exista ya en la base de datos
             if not Link.objects.filter(short_code=code).exists():
                 return code
 
