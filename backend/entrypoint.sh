@@ -3,12 +3,9 @@
 echo "Esperando a que la base de datos esté disponible..."
 
 # Espera hasta que la base de datos esté lista
-while ! nc -z $DB_HOST $DB_PORT; do
-  sleep 1
-done
+wait-for-it $DB_HOST:$DB_PORT --timeout=60 -- echo "Base de datos disponible"
 
-echo "Base de datos disponible, corriendo migraciones y collectstatic..."
-
+echo "Corriendo migraciones y collectstatic..."
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 

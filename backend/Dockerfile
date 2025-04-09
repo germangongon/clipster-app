@@ -3,8 +3,10 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Instalar netcat-openbsd para usar el comando nc
-RUN apt-get update && apt-get install -y netcat-openbsd
+# Instalar curl y wait-for-it
+RUN apt-get update && apt-get install -y curl && \
+    curl -sSL https://github.com/vishnubob/wait-for-it/releases/download/v2.2.3/wait-for-it.sh -o /usr/local/bin/wait-for-it && \
+    chmod +x /usr/local/bin/wait-for-it
 
 WORKDIR /app
 
@@ -20,9 +22,6 @@ COPY entrypoint.sh /entrypoint.sh
 
 # Dar permisos de ejecución al entrypoint
 RUN chmod +x /entrypoint.sh
-
-# Verificar que netcat se haya instalado correctamente (opcional)
-RUN nc -v
 
 # Configurar el entrypoint del contenedor
 ENTRYPOINT ["/entrypoint.sh"]
