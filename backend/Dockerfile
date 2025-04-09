@@ -3,8 +3,8 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Instalar Netcat (usando netcat-openbsd)
-RUN apt-get update && apt-get install -y netcat-openbsd
+# Instalar Netcat (usando netcat-traditional)
+RUN apt-get update && apt-get install -y netcat-traditional
 
 WORKDIR /app
 
@@ -12,14 +12,17 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Copiar el código y el entrypoint
+# Copiar todo el código del backend al contenedor
 COPY . .
 
-# Copiar el entrypoint.sh
+# Copiar el entrypoint.sh al contenedor
 COPY entrypoint.sh /entrypoint.sh
 
 # Dar permisos de ejecución al entrypoint
 RUN chmod +x /entrypoint.sh
+
+# Verificar que netcat se haya instalado correctamente (opcional)
+RUN nc -v
 
 # Configurar el entrypoint del contenedor
 ENTRYPOINT ["/entrypoint.sh"]
