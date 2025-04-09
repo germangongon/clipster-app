@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  web:
+    volumes:
+      - .:/app  # Asegura que los archivos locales estén disponibles en el contenedor
+    env_file:
+      - .env.local  # Este archivo debe tener las configuraciones locales para el entorno de desarrollo
+    ports:
+      - "8000:8000"  # Asegura que el puerto 8000 esté accesible para el desarrollo
+    entrypoint: /entrypoint.sh  # Usa el entrypoint.sh para que ejecute todo el proceso
+    depends_on:
+      - db

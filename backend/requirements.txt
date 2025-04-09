@@ -6,4 +6,3 @@ gunicorn
 psycopg2-binary
 django-cors-headers
 django-environ
-psycopg2>=2.9,<3.0
