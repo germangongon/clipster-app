@@ -138,9 +138,9 @@ REST_FRAMEWORK = {
 }
 
 
-BACKEND_URL = env('BACKEND_URL')
-CORS_ALLOWED_ORIGINS = env('CORS_ALLOWED_ORIGINS').split(',')
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='').split(',')
+BACKEND_URL = env('BACKEND_URL', default='')
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[])
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])
 CORS_ALLOW_CREDENTIALS = True
 
 # Authentication settings
