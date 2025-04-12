@@ -35,4 +35,8 @@ class LinkSerializer(serializers.ModelSerializer):
     def get_short_url(self, obj):
         request = self.context.get('request')
         base_url = request.build_absolute_uri('/') if request else "http://localhost:8000"
-        return f"{base_url}{obj.custom_alias or obj.short_code}"
+        # Remover /api/ de la URL base si existe
+        base_url = base_url.replace('/api/', '/')
+        # Usar el custom_alias si existe, de lo contrario usar el short_code
+        code = obj.custom_alias if obj.custom_alias else obj.short_code
+        return f"{base_url}{code}"

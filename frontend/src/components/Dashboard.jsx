@@ -37,7 +37,8 @@ const Dashboard = ({ darkMode }) => {
 
     const copyToClipboard = async (link) => {
         try {
-            await navigator.clipboard.writeText(`${window.location.origin}/${link.alias}`);
+            const url = `${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}/${link.custom_alias || link.short_code}`;
+            await navigator.clipboard.writeText(url);
             setCopiedLinks(prev => ({ ...prev, [link.id]: true }));
             setTimeout(() => {
                 setCopiedLinks(prev => ({ ...prev, [link.id]: false }));
@@ -204,7 +205,7 @@ const Dashboard = ({ darkMode }) => {
                                             Shortened URL
                                         </p>
                                         <p className="truncate">
-                                            {import.meta.env.VITE_API_BASE_URL.replace('/api', '')}/{link.alias}
+                                            {import.meta.env.VITE_API_BASE_URL.replace('/api', '')}/{link.custom_alias || link.short_code}
                                         </p>
                                     </div>
                                     <button
