@@ -19,8 +19,19 @@ const Navbar = ({ darkMode, toggleDarkMode, isAuthenticated, onLogout }) => {
     <nav className={`${darkMode ? 'bg-gray-800' : 'bg-gradient-to-r from-blue-500 to-indigo-500'} shadow-lg`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link to="/" className="flex items-center">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight bg-clip-text drop-shadow-md">
+          <Link to="/" className="flex items-center space-x-2">
+            <div className={`flex items-center justify-center w-10 h-10 rounded-lg ${
+              darkMode 
+                ? 'bg-gradient-to-br from-blue-500 to-indigo-600' 
+                : 'bg-gradient-to-br from-blue-600 to-indigo-700 shadow-lg'
+            }`}>
+              <span className={`text-2xl ${darkMode ? 'text-white' : 'text-white drop-shadow-md'}`}>🔗</span>
+            </div>
+            <h1 className={`text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight ${
+              darkMode 
+                ? 'text-white' 
+                : 'text-white drop-shadow-lg'
+            }`}>
               Clipster
             </h1>
           </Link>
@@ -55,13 +66,15 @@ const Navbar = ({ darkMode, toggleDarkMode, isAuthenticated, onLogout }) => {
               <>
                 <Link
                   to="/dashboard"
-                  className={`px-4 py-2 rounded-lg text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-indigo-600'}`}
+                  className={`px-4 py-2 rounded-lg text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 ${
+                    darkMode ? 'hover:bg-gray-700' : 'hover:bg-indigo-600'
+                  }`}
                 >
                   Dashboard
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className={`px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105`}
+                  className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105"
                 >
                   Logout
                 </button>
@@ -70,13 +83,17 @@ const Navbar = ({ darkMode, toggleDarkMode, isAuthenticated, onLogout }) => {
               <>
                 <Link
                   to="/register"
-                  className={`px-4 py-2 rounded-lg text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 ${darkMode ? 'bg-gray-600 hover:bg-gray-700' : 'bg-blue-800 hover:bg-blue-900'}`}
+                  className={`px-4 py-2 rounded-lg text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 ${
+                    darkMode ? 'bg-gray-600 hover:bg-gray-700' : 'bg-blue-800 hover:bg-blue-900'
+                  }`}
                 >
                   Register
                 </Link>
                 <Link
                   to="/login"
-                  className={`px-4 py-2 rounded-lg text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 ${darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-indigo-600 hover:bg-indigo-700'}`}
+                  className={`px-4 py-2 rounded-lg text-white font-semibold transition duration-300 ease-in-out transform hover:scale-105 ${
+                    darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-indigo-600 hover:bg-indigo-700'
+                  }`}
                 >
                   Login
                 </Link>
@@ -99,13 +116,15 @@ const Navbar = ({ darkMode, toggleDarkMode, isAuthenticated, onLogout }) => {
               <>
                 <Link
                   to="/dashboard"
-                  className={`block px-3 py-2 rounded-lg text-white font-semibold ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-indigo-600'}`}
+                  className={`block px-3 py-2 rounded-lg text-white font-semibold ${
+                    darkMode ? 'hover:bg-gray-700' : 'hover:bg-indigo-600'
+                  }`}
                 >
                   📊 Dashboard
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className={`w-full text-left px-3 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold`}
+                  className="w-full text-left px-3 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold"
                 >
                   🚪 Logout
                 </button>
@@ -114,13 +133,17 @@ const Navbar = ({ darkMode, toggleDarkMode, isAuthenticated, onLogout }) => {
               <>
                 <Link
                   to="/register"
-                  className={`block px-3 py-2 rounded-lg text-white font-semibold ${darkMode ? 'bg-gray-600 hover:bg-gray-700' : 'bg-blue-800 hover:bg-blue-900'}`}
+                  className={`block px-3 py-2 rounded-lg text-white font-semibold ${
+                    darkMode ? 'bg-gray-600 hover:bg-gray-700' : 'bg-blue-800 hover:bg-blue-900'
+                  }`}
                 >
                   📝 Register
                 </Link>
                 <Link
                   to="/login"
-                  className={`block px-3 py-2 rounded-lg text-white font-semibold ${darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-indigo-600 hover:bg-indigo-700'}`}
+                  className={`block px-3 py-2 rounded-lg text-white font-semibold ${
+                    darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-indigo-600 hover:bg-indigo-700'
+                  }`}
                 >
                   🔑 Login
                 </Link>

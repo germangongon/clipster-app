@@ -34,6 +34,25 @@ class LinkListCreateView(generics.ListCreateAPIView):
                 return code
 
 
+# Vista para eliminar enlaces
+class LinkDeleteView(generics.DestroyAPIView):
+    serializer_class = LinkSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    lookup_field = 'id'
+    lookup_url_kwarg = 'id'
+
+    def get_queryset(self):
+        return Link.objects.filter(user=self.request.user)
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 # Vista para registrar un usuario
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -48,7 +67,7 @@ def register_user(request):
         return Response({'error': 'Username already exists'}, status=status.HTTP_400_BAD_REQUEST)
     
     user = User.objects.create_user(username=username, password=password)
-    return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)        
+    return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
 
 
 # Vista para redirigir a los enlaces

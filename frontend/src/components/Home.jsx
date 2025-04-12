@@ -103,7 +103,7 @@ const Home = ({ darkMode, isAuthenticated }) => {
   };
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-black'}`}>
+    <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className="max-w-4xl mx-auto px-4 py-16 relative">
         {/* Glowing background behind the heading */}
         <div
@@ -115,7 +115,9 @@ const Home = ({ darkMode, isAuthenticated }) => {
           Shorten. Share. Track.
         </h1>
 
-        <p className="relative z-20 text-center text-lg md:text-xl mb-10 text-black dark:text-gray-500 max-w-2xl mx-auto">
+        <p className={`relative z-20 text-center text-lg md:text-xl mb-10 max-w-2xl mx-auto ${
+          darkMode ? 'text-gray-100' : 'text-gray-900'
+        }`}>
           Convert long URLs into short, memorable, and trackable links. Totally free, with or without an account.
         </p>
 
@@ -128,8 +130,8 @@ const Home = ({ darkMode, isAuthenticated }) => {
               onChange={(e) => setOriginalUrl(e.target.value)}
               className={`w-full p-4 rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
                 darkMode 
-                  ? 'bg-gray-800 border-gray-700 focus:ring-blue-500 text-white' 
-                  : 'bg-white border-gray-300 focus:ring-blue-400'
+                  ? 'bg-gray-800 border-gray-700 focus:ring-blue-500 text-white placeholder-gray-400' 
+                  : 'bg-white border-gray-300 focus:ring-blue-400 text-gray-900 placeholder-gray-500'
               }`}
               required
             />
@@ -140,8 +142,8 @@ const Home = ({ darkMode, isAuthenticated }) => {
               onChange={(e) => setCustomAlias(e.target.value)}
               className={`w-full p-4 rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
                 darkMode 
-                  ? 'bg-gray-800 border-gray-700 focus:ring-blue-500 text-white' 
-                  : 'bg-white border-gray-300 focus:ring-blue-400'
+                  ? 'bg-gray-800 border-gray-700 focus:ring-blue-500 text-white placeholder-gray-400' 
+                  : 'bg-white border-gray-300 focus:ring-blue-400 text-gray-900 placeholder-gray-500'
               }`}
             />
           </div>
@@ -166,7 +168,11 @@ const Home = ({ darkMode, isAuthenticated }) => {
           <div className={`mt-10 p-6 rounded-xl text-center border ${
             darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200 shadow'
           }`}>
-            <p className="text-lg font-medium mb-2">Your shortened link:</p>
+            <p className={`text-lg font-medium mb-2 ${
+              darkMode ? 'text-gray-100' : 'text-gray-900'
+            }`}>
+              Your shortened link:
+            </p>
             <div className="flex items-center justify-center gap-2">
               <a
                 href={shortenedLink}
@@ -182,7 +188,7 @@ const Home = ({ darkMode, isAuthenticated }) => {
                 onClick={copyToClipboard}
                 className={`p-2 rounded-lg transition-colors ${
                   darkMode 
-                    ? 'text-white hover:bg-gray-700' 
+                    ? 'text-gray-100 hover:bg-gray-700' 
                     : 'text-gray-600 hover:bg-gray-100'
                 }`}
                 title="Copy to clipboard"
@@ -191,7 +197,9 @@ const Home = ({ darkMode, isAuthenticated }) => {
               </button>
             </div>
             {!isAuthenticated && (
-              <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+              <p className={`mt-4 text-sm ${
+                darkMode ? 'text-gray-400' : 'text-gray-600'
+              }`}>
                 Want to save your links and view statistics?{' '}
                 <Link to="/register" className="text-blue-400 hover:underline">Sign up for free</Link>
               </p>
