@@ -24,21 +24,13 @@ class LinkListCreateView(generics.ListCreateAPIView):
         return Link.objects.none()  # 🔒 Los anónimos no ven enlaces
 
     def perform_create(self, serializer):
-        custom_alias = serializer.validated_data.get('custom_alias', '').strip()
-
-        # Validar que el alias no exista
-        if custom_alias and Link.objects.filter(custom_alias=custom_alias).exists():
-            raise serializer.ValidationError({"custom_alias": "This alias is already taken."})
-
-        short_code = custom_alias if custom_alias else self.generate_unique_code()
         user = self.request.user if self.request.user.is_authenticated else None
-
-        serializer.save(user=user, short_code=short_code)
+        serializer.save(user=user)
 
     def generate_unique_code(self):
         while True:
             code = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
-            if not Link.objects.filter(short_code=code).exists():
+            if not Link.objects.filter(short_code=code).exists() and not Link.objects.filter(custom_alias=code).exists():
                 return code
 
 

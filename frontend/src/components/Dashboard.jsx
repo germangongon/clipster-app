@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 const Dashboard = ({ darkMode }) => {
   const [links, setLinks] = useState([]);
+  const [copiedLinks, setCopiedLinks] = useState({});
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -14,6 +15,18 @@ const Dashboard = ({ darkMode }) => {
     };
     fetchLinks();
   }, [token]);
+
+  const copyToClipboard = async (linkId, shortUrl) => {
+    try {
+      await navigator.clipboard.writeText(shortUrl);
+      setCopiedLinks(prev => ({ ...prev, [linkId]: true }));
+      setTimeout(() => {
+        setCopiedLinks(prev => ({ ...prev, [linkId]: false }));
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  };
 
   return (
     <div className={`min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
@@ -30,21 +43,38 @@ const Dashboard = ({ darkMode }) => {
             >
               <div>
                 <h3 className="text-lg font-semibold mb-4">Original URL</h3>
-                <p className={`${darkMode ? 'text-gray-400' : 'text-gray-600'} text-sm mb-4`}>
+                <p className={`${darkMode ? 'text-gray-400' : 'text-gray-600'} text-sm mb-4 break-words`}>
                   {link.original_url}
                 </p>
                 <h3 className="text-lg font-semibold mb-2">Shortened URL</h3>
-                <a
-                  href={link.short_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`${darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-500'} truncate block mb-4`}
-                >
-                  {link.short_url}
-                </a>
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="flex-1 min-w-0">
+                    <a
+                      href={link.short_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${
+                        darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-500'
+                      } truncate block`}
+                    >
+                      {link.short_url}
+                    </a>
+                  </div>
+                  <button
+                    onClick={() => copyToClipboard(link.id, link.short_url)}
+                    className={`flex-shrink-0 p-2 rounded-lg transition-colors ${
+                      darkMode 
+                        ? 'text-white hover:bg-gray-700' 
+                        : 'text-gray-600 hover:bg-gray-100'
+                    }`}
+                    title="Copy to clipboard"
+                  >
+                    {copiedLinks[link.id] ? '✅' : '📋'}
+                  </button>
+                </div>
               </div>
 
-              {/* Diseño creativo para los clicks */}
+              {/* Creative design for clicks */}
               <div className="flex justify-center mt-4">
                 <div className="relative">
                   <div className="w-20 h-20 rounded-full bg-gradient-to-r from-blue-500 to-blue-700 flex justify-center items-center shadow-2xl transform hover:scale-105 transition duration-300">

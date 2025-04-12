@@ -13,11 +13,13 @@ class Link(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # ✅ ahora es opcional
     original_url = models.URLField()
     short_code = models.CharField(max_length=15, unique=True, blank=True)
-    custom_alias = models.CharField(max_length=50, unique=True, null=True, blank=True)
+    custom_alias = models.CharField(max_length=50, unique=True, null=True, blank=True, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     clicks = models.PositiveIntegerField(default=0)
 
     def save(self, *args, **kwargs):
+        if self.custom_alias == '':
+            self.custom_alias = None
         if self.custom_alias:
             self.short_code = self.custom_alias
         elif not self.short_code:
