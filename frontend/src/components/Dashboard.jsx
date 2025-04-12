@@ -204,9 +204,16 @@ const Dashboard = ({ darkMode }) => {
                                         }`}>
                                             Shortened URL
                                         </p>
-                                        <p className="truncate">
+                                        <a
+                                            href={`${import.meta.env.VITE_API_BASE_URL.replace('/api', '')}/${link.custom_alias || link.short_code}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={`truncate hover:underline ${
+                                                darkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-500'
+                                            }`}
+                                        >
                                             {import.meta.env.VITE_API_BASE_URL.replace('/api', '')}/{link.custom_alias || link.short_code}
-                                        </p>
+                                        </a>
                                     </div>
                                     <button
                                         onClick={() => copyToClipboard(link)}
@@ -222,11 +229,16 @@ const Dashboard = ({ darkMode }) => {
                                 </div>
 
                                 <div className="mt-4 flex items-center justify-between">
-                                    <div className="flex items-center">
-                                        <span className={`text-sm ${
+                                    <div className="flex items-center space-x-2">
+                                        <span className={`text-sm font-semibold ${
                                             darkMode ? 'text-gray-400' : 'text-gray-500'
                                         }`}>
-                                            Clicks: {link.clicks}
+                                            Clicks:
+                                        </span>
+                                        <span className={`text-lg font-bold ${
+                                            darkMode ? 'text-blue-400' : 'text-blue-600'
+                                        }`}>
+                                            {link.clicks}
                                         </span>
                                     </div>
                                     <div className="flex items-center">

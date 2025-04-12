@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 import random
 import string
+from django.db import models, transaction
 
 
 # Vista para crear y listar enlaces
@@ -74,20 +75,30 @@ def register_user(request):
 class RedirectView(View):
     def get(self, request, code):
         try:
-            # Buscar el enlace por short_code o custom_alias
-            link = get_object_or_404(Link, Q(short_code=code) | Q(custom_alias=code))
-            link.clicks += 1
-            link.save()
-            
-            # Obtener la URL original
-            original_url = link.original_url
-            
-            # Asegurarse de que la URL tenga el protocolo
-            if not original_url.startswith(('http://', 'https://')):
-                original_url = 'https://' + original_url
-            
-            # Redirigir a la URL original
-            return redirect(original_url, permanent=True)
+            print(f"Intentando redirigir con código: {code}")  # Debug
+            with transaction.atomic():
+                # Buscar el enlace por short_code o custom_alias
+                link = get_object_or_404(Link, Q(short_code=code) | Q(custom_alias=code))
+                print(f"Enlace encontrado: {link.id}, clicks actuales: {link.clicks}")  # Debug
+                
+                # Incrementar los clicks usando el nuevo método
+                link.increment_clicks()
+                print(f"Clicks después de incrementar: {link.clicks}")  # Debug
+                
+                # Obtener la URL original
+                original_url = link.original_url
+                
+                # Asegurarse de que la URL tenga el protocolo
+                if not original_url.startswith(('http://', 'https://')):
+                    original_url = 'https://' + original_url
+                
+                print(f"Redirigiendo a: {original_url}")  # Debug
+                # Redirigir a la URL original sin cache
+                response = redirect(original_url)
+                response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+                response['Pragma'] = 'no-cache'
+                response['Expires'] = '0'
+                return response
         except Exception as e:
             print(f"Error en redirección: {str(e)}")  # Para debugging
             return redirect('/')  # Redirigir a la página principal en caso de error

@@ -10,7 +10,7 @@ def generate_unique_short_code(length=6):
             return short_code
 
 class Link(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # ✅ ahora es opcional
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     original_url = models.URLField()
     short_code = models.CharField(max_length=15, unique=True, blank=True)
     custom_alias = models.CharField(max_length=50, unique=True, null=True, blank=True, default=None)
@@ -25,6 +25,12 @@ class Link(models.Model):
         elif not self.short_code:
             self.short_code = generate_unique_short_code()
         super().save(*args, **kwargs)
+
+    def increment_clicks(self):
+        """Método para incrementar los clicks de manera atómica"""
+        self.clicks = models.F('clicks') + 1
+        self.save(update_fields=['clicks'])
+        self.refresh_from_db()
 
     def __str__(self):
         return f"{self.original_url} -> {self.custom_alias or self.short_code}"
