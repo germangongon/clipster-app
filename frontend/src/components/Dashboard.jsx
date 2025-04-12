@@ -204,7 +204,7 @@ const Dashboard = ({ darkMode }) => {
                                             Shortened URL
                                         </p>
                                         <p className="truncate">
-                                            {window.location.origin}/{link.alias}
+                                            {import.meta.env.VITE_API_BASE_URL.replace('/api', '')}/{link.alias}
                                         </p>
                                     </div>
                                     <button

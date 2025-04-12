@@ -73,7 +73,16 @@ def register_user(request):
 # Vista para redirigir a los enlaces
 class RedirectView(View):
     def get(self, request, code):
-        link = get_object_or_404(Link, Q(short_code=code) | Q(custom_alias=code))
-        link.clicks += 1
-        link.save()
-        return redirect(link.original_url)
+        try:
+            link = get_object_or_404(Link, Q(short_code=code) | Q(custom_alias=code))
+            link.clicks += 1
+            link.save()
+            
+            # Asegurarse de que la URL original tenga el protocolo
+            original_url = link.original_url
+            if not original_url.startswith(('http://', 'https://')):
+                original_url = 'https://' + original_url
+                
+            return redirect(original_url)
+        except Exception as e:
+            return redirect('/')  # Redirigir a la página principal en caso de error

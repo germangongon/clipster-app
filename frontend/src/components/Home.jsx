@@ -77,7 +77,8 @@ const Home = ({ darkMode, isAuthenticated }) => {
         throw new Error(data.detail || 'Failed to shorten URL. Please try again.');
       }
 
-      setShortenedLink(data.short_url.replace('/api/', '/'));
+      const baseUrl = import.meta.env.VITE_API_BASE_URL.replace('/api', '');
+      setShortenedLink(`${baseUrl}/${data.short_code || data.custom_alias}`);
     } catch (err) {
       setError(err.message || 'An unexpected error occurred. Please try again.');
     }
